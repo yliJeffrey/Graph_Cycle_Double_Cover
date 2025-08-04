@@ -1,8 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-def edge_induced_subgraph(G, L):
-    H = nx.Graph()  # or G.__class__() if G might be a different type
+def edge_induced_subgraph(L):
+    H = nx.Graph()
     H.add_edges_from(L)
     return H
 
@@ -26,7 +26,7 @@ G=nx.complete_graph(4)
 # L is a subset of edges
 L = [(1,2),(0,3)]
 
-H = edge_induced_subgraph(G, L)
+H = edge_induced_subgraph(L)
 
 print("Nodes in subgraph:", H.nodes())
 print("Edges in subgraph:", H.edges())
