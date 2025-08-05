@@ -1,3 +1,7 @@
+# --- Subgraph Construction --- #
+# Input: graph G & a subset of edges L
+# Output: subgraph wih edge set L
+
 import networkx as nx
 import matplotlib.pyplot as plt
 

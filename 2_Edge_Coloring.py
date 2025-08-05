@@ -1,3 +1,5 @@
+# --- 2-Edge Coloring --- #
+
 import networkx as nx
 import matplotlib.pyplot as plt
 

@@ -1,3 +1,4 @@
+# Original implementation adapted from Minjae Park
 # 20106911 Minjae Park
 # Finding an Ear decomposition of 2(-edge)-connected graph
 
