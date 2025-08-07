@@ -20,6 +20,20 @@ Induction Step {
 }
 '''
 
+# Check if an edge is shared by at least two cycles in the cycle list.
+def is_shared_edge(cycle_list, edge):
+    count = 0
+    # Handle both orientations of the edge since the graph is undirected
+    edge_reversed = (edge[1], edge[0])
+    
+    for cycle in cycle_list:
+        if edge in cycle or edge_reversed in cycle:
+            count += 1
+            if count >= 2:
+                return True
+    
+    return False
+
 def get_cycle_double_cover(G):
     ear_list = get_ear_decomposition(G)
 
@@ -47,8 +61,6 @@ def induction_step(G, cycle_double_cover, u, w):
     plt.title("subgraph")
     nx.draw(subgraph, with_labels=True)
     plt.show()
-
-    # Get the shared edges of cycles in MCP
 
 
     return intersection_graph, u_shared_cycles, w_shared_cycles, miminum_cycle_path
