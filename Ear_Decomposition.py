@@ -163,69 +163,90 @@ def analyzeEar(ear_number, ear_list):
     
     return ear_edges
 
+def get_ear_decomposition(G):
+    T=makeSpanningTree(G,0)
+    assignNonTreeEdgeLabel(G,T,0)
+    assignTreeEdgeLabel(G,T,0)
 
-T=makeSpanningTree(G,0)
-assignNonTreeEdgeLabel(G,T,0)
-assignTreeEdgeLabel(G,T,0)
+    pos=nx.circular_layout(G)
+    ear_list=[[] for i in range(count+1)]
+    for (x,y) in G.edges():
+        ear=G[x][y]['label']
+        ear_list[ear].append((x,y))
+    
+    return ear_list
 
-'''
-Output
-'''
-pos=nx.circular_layout(G)
-ear_list=[[] for i in range(count+1)]
-for (x,y) in G.edges():
-    ear=G[x][y]['label']
-    ear_list[ear].append((x,y))
 
-# Print detailed information about each ear
-print("=== EAR DECOMPOSITION RESULTS ===")
-print(f"Total number of ears found: {count}")
-print()
+def main():
 
-for i in range(len(ear_list)):
-    if ear_list[i]:  # Only print non-empty ears
-        print(f"Ear {i}: {ear_list[i]}")
-        print(f"  - Number of edges: {len(ear_list[i])}")
-        print(f"  - Color: {colorList[i%len(colorList)]}")
-        
-        # Find unique vertices in this ear
-        vertices_in_ear = set()
-        for edge in ear_list[i]:
-            vertices_in_ear.add(edge[0])
-            vertices_in_ear.add(edge[1])
-        print(f"  - Vertices involved: {sorted(list(vertices_in_ear))}")
-        print()
+    # T=makeSpanningTree(G,0)
+    # assignNonTreeEdgeLabel(G,T,0)
+    # assignTreeEdgeLabel(G,T,0)
 
-print("Raw ear_list:", ear_list)
-print()
+    # '''
+    # Output
+    # '''
+    # pos=nx.circular_layout(G)
+    # ear_list=[[] for i in range(count+1)]
+    # for (x,y) in G.edges():
+    #     ear=G[x][y]['label']
+    #     ear_list[ear].append((x,y))
 
-# Analyze each ear individually
-for i in range(len(ear_list)):
-    if ear_list[i]:  # Only analyze non-empty ears
-        analyzeEar(i, ear_list)
+    ear_list = get_ear_decomposition(G)
+    pos = nx.circular_layout(G)
 
-print("\n" + "="*50)
-print("SUMMARY: How to find each ear")
-print("="*50)
-print("1. Ear 0 (orange): The initial structure - usually contains the spanning tree edges")
-print("2. Subsequent ears: Each adds connectivity by connecting previously separate parts")
-print("3. Each ear is a path where endpoints connect to already-constructed parts")
-print("4. Look for the pattern: ear endpoints attach to vertices from earlier ears")
+    # Print detailed information about each ear
+    print("=== EAR DECOMPOSITION RESULTS ===")
+    print(f"Total number of ears found: {count}")
+    print()
 
-# Visualization
-nx.draw_networkx_nodes(G,pos)
-nx.draw_networkx_labels(G,pos)
-for i in range(len(ear_list)):
-    if ear_list[i]:  # Only draw non-empty ears
-        nx.draw_networkx_edges(G,pos,edgelist=ear_list[i],edge_color=colorList[i%len(colorList)],alpha=0.5,width=3)
+    for i in range(len(ear_list)):
+        if ear_list[i]:  # Only print non-empty ears
+            print(f"Ear {i}: {ear_list[i]}")
+            print(f"  - Number of edges: {len(ear_list[i])}")
+            print(f"  - Color: {colorList[i%len(colorList)]}")
 
-# Create edge labels showing ear numbers
-edge_labels = {}
-for (x,y) in G.edges():
-    ear_num = G[x][y]['label']
-    edge_labels[(x,y)] = f"E{ear_num}"
+            # Find unique vertices in this ear
+            vertices_in_ear = set()
+            for edge in ear_list[i]:
+                vertices_in_ear.add(edge[0])
+                vertices_in_ear.add(edge[1])
+            print(f"  - Vertices involved: {sorted(list(vertices_in_ear))}")
+            print()
 
-nx.draw_networkx_edge_labels(G,pos,edge_labels,alpha=0.7)
+    print("Raw ear_list:", ear_list)
+    print()
 
-plt.title("Ear Decomposition - Each color represents a different ear")
-plt.show()
+    # Analyze each ear individually
+    for i in range(len(ear_list)):
+        if ear_list[i]:  # Only analyze non-empty ears
+            analyzeEar(i, ear_list)
+
+    print("\n" + "="*50)
+    print("SUMMARY: How to find each ear")
+    print("="*50)
+    print("1. Ear 0 (orange): The initial structure - usually contains the spanning tree edges")
+    print("2. Subsequent ears: Each adds connectivity by connecting previously separate parts")
+    print("3. Each ear is a path where endpoints connect to already-constructed parts")
+    print("4. Look for the pattern: ear endpoints attach to vertices from earlier ears")
+
+    # Visualization
+    nx.draw_networkx_nodes(G,pos)
+    nx.draw_networkx_labels(G,pos)
+    for i in range(len(ear_list)):
+        if ear_list[i]:  # Only draw non-empty ears
+            nx.draw_networkx_edges(G,pos,edgelist=ear_list[i],edge_color=colorList[i%len(colorList)],alpha=0.5,width=3)
+
+    # Create edge labels showing ear numbers
+    edge_labels = {}
+    for (x,y) in G.edges():
+        ear_num = G[x][y]['label']
+        edge_labels[(x,y)] = f"E{ear_num}"
+
+    nx.draw_networkx_edge_labels(G,pos,edge_labels,alpha=0.7)
+
+    plt.title("Ear Decomposition - Each color represents a different ear")
+    plt.show()
+
+if __name__ == "__main__":
+    main()

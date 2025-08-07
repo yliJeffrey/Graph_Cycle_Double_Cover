@@ -15,27 +15,29 @@ def get_vertex_sharing_cycles(cycle_double_cover, v):
     return vertex_sharing_cycles
 
 
-# Testing
-G = nx.Graph()
-G.add_edge(0,1)
-G.add_edge(0,2)
-G.add_edge(0,3)
-G.add_edge(1,3)
-G.add_edge(2,3)
+def main():
+    # Testing
+    G = nx.Graph()
+    G.add_edge(0,1)
+    G.add_edge(0,2)
+    G.add_edge(0,3)
+    G.add_edge(1,3)
+    G.add_edge(2,3)
 
+    cycle_double_cover = [[(0,2),(2,3),(3,0)], [(0,1),(1,3),(3,0)], [(0,1),(1,3),(3,2),(2,0)]]
+    print(f"The Cycle Double-Cover:")
+    for cycle in cycle_double_cover:
+        print(cycle)
+    print("\n")
 
-cycle_double_cover = [[(0,2),(2,3),(3,0)], [(0,1),(1,3),(3,0)], [(0,1),(1,3),(3,2),(2,0)]]
-print(f"The Cycle Double-Cover:")
-for cycle in cycle_double_cover:
-    print(cycle)
-print("\n")
+    vertex_sharing_cycles = get_vertex_sharing_cycles(cycle_double_cover, 1)
+    print("Vertex Sharing Cycles:")
+    for cycle in vertex_sharing_cycles:
+        print(cycle)
 
-vertex_sharing_cycles = get_vertex_sharing_cycles(cycle_double_cover, 1)
-print("Vertex Sharing Cycles:")
-for cycle in vertex_sharing_cycles:
-    print(cycle)
+    pos_G = nx.spring_layout(G, seed=42)
+    nx.draw(G, pos=pos_G, with_labels=True)
+    plt.show()
 
-pos_G = nx.spring_layout(G, seed=42)
-nx.draw(G, pos=pos_G, with_labels=True)
-plt.show()
-
+if __name__ == "__main__":
+    main()

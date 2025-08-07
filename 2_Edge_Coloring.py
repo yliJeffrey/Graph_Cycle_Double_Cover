@@ -27,25 +27,29 @@ def two_edge_coloring(graph):
 
     return color_map
 
-# You can switch between path_graph(n) or cycle_graph(n)
-G = nx.cycle_graph(4)  # Try nx.path_graph(4) to test the path instead
+def main():
+    # You can switch between path_graph(n) or cycle_graph(n)
+    G = nx.cycle_graph(4)  # Try nx.path_graph(4) to test the path instead
 
-# Apply edge coloring
-coloring = two_edge_coloring(G)
+    # Apply edge coloring
+    coloring = two_edge_coloring(G)
 
-# Draw the graph
-pos = nx.spring_layout(G)  # Positions for nodes
+    # Draw the graph
+    pos = nx.spring_layout(G)  # Positions for nodes
 
-# Separate edges by color
-red_edges = [edge for edge, color in coloring.items() if color == 0]
-blue_edges = [edge for edge, color in coloring.items() if color == 1]
+    # Separate edges by color
+    red_edges = [edge for edge, color in coloring.items() if color == 0]
+    blue_edges = [edge for edge, color in coloring.items() if color == 1]
 
-plt.figure(figsize=(6, 4))
-nx.draw_networkx_nodes(G, pos, node_color='lightgray', node_size=600)
-nx.draw_networkx_labels(G, pos, font_color='black')
-nx.draw_networkx_edges(G, pos, edgelist=red_edges, edge_color='red', width=2)
-nx.draw_networkx_edges(G, pos, edgelist=blue_edges, edge_color='blue', width=2, style='dashed')
+    plt.figure(figsize=(6, 4))
+    nx.draw_networkx_nodes(G, pos, node_color='lightgray', node_size=600)
+    nx.draw_networkx_labels(G, pos, font_color='black')
+    nx.draw_networkx_edges(G, pos, edgelist=red_edges, edge_color='red', width=2)
+    nx.draw_networkx_edges(G, pos, edgelist=blue_edges, edge_color='blue', width=2, style='dashed')
 
-plt.title("2-Edge Coloring of Graph")
-plt.axis('off')
-plt.show()
+    plt.title("2-Edge Coloring of Graph")
+    plt.axis('off')
+    plt.show()
+
+if __name__ == "__main__":
+    main()
