@@ -3,7 +3,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-def two_edge_coloring(graph):
+def two_edge_coloring(graph, deg2_vertices, shared_edges, new_edge):
     color_map = {}  # key: edge (u, v), value: 0 or 1 (two colors)
 
     visited_edges = set()
